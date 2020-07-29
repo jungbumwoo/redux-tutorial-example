@@ -11,27 +11,63 @@
             }
         </style>
         <div id="red"></div>
+        <div id="blue"></div>
+        <div id="green"></div>
         <script>
-            function reducer(action, state) {
+
+            function reducer(state, action) {
                 if (state === undefined) {
                     return {color: 'yellow'}
                 }
-                
+                if( action.type === 'CHANGE_COLOR') {
+                    return {color: action.color}
+                }
             }
 
             var store = Redux.createStore(reducer);
-
+            
             function red() {
+                var abc = store.getState();
                 document.querySelector('#red').innerHTML = `
-                    <div class="container">
+                    <div class="container" style="background-color: ${abc.color}">
                         <h3>red</h3>
                         <input type=button value='fire' onclick="
-                            store.dispatch({type:'CHANGE_COLOR', color:red})
+                            store.dispatch({type:'CHANGE_COLOR', color: 'red'})
                         " />
                     </div>
                 `;
             }
+            store.subscribe(red);
             red();
+
+            function blue() {
+                var abc = store.getState();
+                document.querySelector('#blue').innerHTML = `
+                    <div class="container" style="background-color: ${abc.color}">
+                        <h3>blue</h3>
+                        <input type=button value='fire' onclick="
+                            store.dispatch({type:'CHANGE_COLOR', color: 'blue'})
+                        " />
+                    </div>
+                `;
+            }
+            store.subscribe(blue);
+            blue();
+
+            function green() {
+                var abc = store.getState();
+                console.log(`abc is ${JSON.stringify(abc)}`);
+                document.querySelector('#green').innerHTML = `
+                    <div class="container" style="background-color: ${abc.color}">
+                        <h3>green</h3>
+                        <input type=button value='fire' onclick="
+                            store.dispatch({type:'CHANGE_COLOR', color: 'green'})
+                        " />
+                    </div>
+                `;
+            }
+            store.subscribe(green);
+            green();
         </script>
     </body>
 </html>
