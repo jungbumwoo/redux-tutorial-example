@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.5/redux.min.js"></script>
+    </head>
+    <body>
+        <header>
+            <h1>Web</h1>
+            Hello, Web
+        </header>
+        <nav>
+            <ol>
+                <li><a href="javascript:void(0);" onclick=navLiClicked()>HTML</a></li>
+                <li><a href="javascript:void(0);" onclick=console.log(123)>CSS</a></li>
+            </ol>
+        </nav>
+        <article>
+            <h2>HTML</h2>
+            <p>HTML is ...</p>
+            <div id="article_title"></div>
+            <div id="article_content"></div>
+            <ul>
+                <li><input type="button" value="create"></li>
+                <li><input type="button" value="delete"></li>
+            </ul>
+            <form action="#" onclick=formSubmited()>
+                <label for="fname">First name:</label><br>
+                <input type="text" id="fname" name="fname"><br>
+                <label for="lname">Last name:</label><br>
+                <input type="text" id="lname" name="lname"><br><br>
+                <input type="submit" value="Submit">
+            </form>
+        </article>
+        <script>
+            var store = Redux.createStore(reducer);
+
+            var storeGetState = store.getState();
+            console.log(`storeGetState is ${storeGetState}`)
+            var newState;
+            function reducer(state, action){
+                if (state === undefined) {
+                    return {}
+                }
+                
+                if (action.type) {
+                    newState = Object.assign({}, state, {title: action.title, content: action.content})
+                    return newState
+                }
+            };
+
+            function formSubmited(){
+                // dispatch action 보내주기
+                console.log(formSubmited);
+            };
+
+            function navLiClicked() {
+                console.log('navLiClicked is clicked')
+            };
+
+            function view_content(){
+                var view_title = storeGetState.title;
+                var view_content = storeGetState.content;
+                document.querySelector('#article_title').innerHTML = `
+                    <div>${view_title}<div>                
+                `;
+                document.querySelector('#article_content').innerHTML = `
+                    <div>${view_content}<div>
+                `;
+            }
+            store.subscribe();
+        </script>
+    </body>
+</html>
