@@ -15,19 +15,22 @@
             </ol>
         </nav>
         <article>
-            <h2>HTML</h2>
-            <p>HTML is ...</p>
             <div id="article_title"></div>
             <div id="article_content"></div>
             <ul>
                 <li><input type="button" value="create"></li>
                 <li><input type="button" value="delete"></li>
             </ul>
-            <form action="#" onclick=formSubmited()>
-                <label for="fname">First name:</label><br>
-                <input type="text" id="fname" name="fname"><br>
-                <label for="lname">Last name:</label><br>
-                <input type="text" id="lname" name="lname"><br><br>
+            <form action="#" onclick="
+                event.preventDefault();
+                _title = this.title.value;
+                _content = this.content.value;
+                store.dispatch({type: `CREATE`, title: _title, content: _content})
+            ">
+                <label for="title">Title</label><br>
+                <input type="text" id="title" name="title"><br>
+                <label for="content">Content</label><br>
+                <input type="text" id="content" name="content"><br><br>
                 <input type="submit" value="Submit">
             </form>
         </article>
@@ -39,10 +42,10 @@
             var newState;
             function reducer(state, action){
                 if (state === undefined) {
-                    return {}
+                    return {title: `HTML`, content:`HTML is..`}
                 }
                 
-                if (action.type) {
+                if (action.type = 'CREATE') {
                     newState = Object.assign({}, state, {title: action.title, content: action.content})
                     return newState
                 }
@@ -50,7 +53,12 @@
 
             function formSubmited(){
                 // dispatch action 보내주기
-                console.log(formSubmited);
+                event.preventDefault();
+                var _title = this.value.title;
+                var _content = this.value.content;
+                console.log(_title);
+                console.log(_content);
+                
             };
 
             function navLiClicked() {
@@ -60,14 +68,17 @@
             function view_content(){
                 var view_title = storeGetState.title;
                 var view_content = storeGetState.content;
+                console.log(view_title);
                 document.querySelector('#article_title').innerHTML = `
                     <div>${view_title}<div>                
                 `;
+                console.log(view_content);
                 document.querySelector('#article_content').innerHTML = `
                     <div>${view_content}<div>
                 `;
             }
-            store.subscribe();
+            view_content();
+            store.subscribe(view_content);
         </script>
     </body>
 </html>
