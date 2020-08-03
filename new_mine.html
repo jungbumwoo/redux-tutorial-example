@@ -21,10 +21,12 @@
                 <li><input type="button" value="create"></li>
                 <li><input type="button" value="delete"></li>
             </ul>
-            <form action="#" onclick="
+            <form action="#" onsubmit="
                 event.preventDefault();
-                _title = this.title.value;
-                _content = this.content.value;
+                console.log(`this.title.vlaue is: ${this.title.vlaue}`);
+                console.log(`this.content.vlaue is: ${this.content.vlaue}`);
+                var _title = this.title.value;
+                var _content = this.content.value;
                 store.dispatch({type: `CREATE`, title: _title, content: _content})
             ">
                 <label for="title">Title</label><br>
@@ -38,7 +40,7 @@
             var store = Redux.createStore(reducer);
 
             var storeGetState = store.getState();
-            console.log(`storeGetState is ${storeGetState}`)
+            console.log(`storeGetState is:  ${storeGetState}`)
             var newState;
             function reducer(state, action){
                 if (state === undefined) {
@@ -56,9 +58,8 @@
                 event.preventDefault();
                 var _title = this.value.title;
                 var _content = this.value.content;
-                console.log(_title);
-                console.log(_content);
-                
+                console.log(`_title in formSubmited is ${_title}`);
+                console.log(`_content in formSubmited is ${_content}`);
             };
 
             function navLiClicked() {
@@ -68,11 +69,11 @@
             function view_content(){
                 var view_title = storeGetState.title;
                 var view_content = storeGetState.content;
-                console.log(view_title);
+                console.log(`view_title in view_title() is :${view_title}`);
+                console.log(`view_content in view_content() is :${view_content}`);
                 document.querySelector('#article_title').innerHTML = `
                     <div>${view_title}<div>                
                 `;
-                console.log(view_content);
                 document.querySelector('#article_content').innerHTML = `
                     <div>${view_content}<div>
                 `;
