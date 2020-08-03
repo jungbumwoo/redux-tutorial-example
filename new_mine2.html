@@ -42,7 +42,14 @@
                 }
                 
                 if (action.type = 'CREATE') {
+                    
+                    console.log(`state is ${JSON.stringify.state}`);
+                    var newState = state.push({id: state.length+1, title: action.title, content: action.content});
+                    /*
                     newState = Object.assign({}, state, {title: action.title, content: action.content})
+                    */
+                    console.log(`newState is ${JSON.stringify.newState}`);
+
                     return newState
                 }
             };
@@ -62,8 +69,9 @@
 
             function view_content(){
                 var storeGetState = store.getState();
-                var view_title = storeGetState.title;
-                var view_content = storeGetState.content;
+                console.log(`storeGetState is ${JSON.stringify.storeGetState}`);
+                var view_title = storeGetState[storeGetState.length-1].title;
+                var view_content = storeGetState[storeGetState.length-1].content;
                 console.log(`view_title in view_title() is :${view_title}`);
                 console.log(`view_content in view_content() is :${view_content}`);
                 document.querySelector('#article_title').innerHTML = `
