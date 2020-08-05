@@ -6,12 +6,13 @@
     <body>
         <header>
             <h1>Web</h1>
-            Hello, Web
+            Hello, Here is list of title
         </header>
         <nav>
             <div id="nav"></div>
         </nav>
         <article>
+            <div style="color: blue">Content</div>
             <div id="article_title"></div>
             <div id="article_content"></div>
             <ul>
@@ -34,44 +35,35 @@
             </form>
         </article>
         <script>
+            const initialState = {
+                cont: [{id: 1, title:"HTML", content:"HTML is.."}]
+            }
             var store = Redux.createStore(reducer);
-            var newState;
             function reducer(state, action){
                 if (state === undefined) {
-                    return {id: 1, title: `HTML`, content:`HTML is..`}
+                    return initialState
                 }
-                
                 if (action.type = 'CREATE') {
-                    
-                    console.log(`state is ${JSON.stringify.state}`);
-                    var newState = state.push({id: state.length+1, title: action.title, content: action.content});
+                    let newState = Object.assign({}, state, {
+                        cont: [
+                            ...state.cont,
+                            {
+                                id: state.cont.length + 1,title: action.title, content: action.content
+                            }
+                        ]
+                    })
                     /*
                     newState = Object.assign({}, state, {title: action.title, content: action.content})
                     */
-                    console.log(`newState is ${JSON.stringify.newState}`);
-
                     return newState
                 }
             };
-
-            function formSubmited(){
-                // dispatch action 보내주기
-                event.preventDefault();
-                var _title = this.value.title;
-                var _content = this.value.content;
-                console.log(`_title in formSubmited is ${_title}`);
-                console.log(`_content in formSubmited is ${_content}`);
-            };
-
-            function navLiClicked() {
-                console.log('navLiClicked is clicked')
-            };
-
+            
             function view_content(){
-                var storeGetState = store.getState();
-                console.log(`storeGetState is ${JSON.stringify.storeGetState}`);
-                var view_title = storeGetState[storeGetState.length-1].title;
-                var view_content = storeGetState[storeGetState.length-1].content;
+                let storeGetState = store.getState();
+                console.log(storeGetState);
+                var view_title = storeGetState.cont[storeGetState.cont.length-1].title;
+                var view_content = storeGetState.cont[storeGetState.cont.length-1].content;
                 console.log(`view_title in view_title() is :${view_title}`);
                 console.log(`view_content in view_content() is :${view_content}`);
                 document.querySelector('#article_title').innerHTML = `
@@ -81,18 +73,42 @@
                     <div>${view_content}<div>
                 `;
             }
-            view_content();
             store.subscribe(view_content);
-
+            view_content();
+            
             function navInnerHtml(){
+                let storeGetState = store.getState();
+                let navlist = '';
+                /* 반복문 사용해서 store에 저장된 제목, 내용 돌려서 찍어주기*/
+                
+                for(let i= 0; i< storeGetState.cont.length; i++) {
+                    navlist = navlist + `
+                        <li>${storeGetState.cont[i].title}</li>
+                    `;
+                }
+                
                 document.querySelector('#nav').innerHTML = `
-                <ol>
-                    <li><a href="javascript:void(0);" onclick=navLiClicked()>HTML</a></li>
-                    <li><a href="javascript:void(0);" onclick=console.log(123)>CSS</a></li>
-                </ol>
-                `;
+                        <ol>${navlist}</ol>
+                    `;
+                    
+
+
+
+
+                /*
+                for(let i = 0; i < storeGetState.cont.length; i++) {
+                    
+                    document.querySelector('#nav').innerHTML = `
+                        <ol>
+                            <li><a href="javascript:void(0);">${storeGetState.cont[i].title}</a></li>
+                        </ol>
+                    `;
+                    
+                }
+                */
             }
             navInnerHtml();
+            store.subscribe(navInnerHtml);
         </script>
     </body>
 </html>
