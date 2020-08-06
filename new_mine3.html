@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.5/redux.min.js"></script>
+    </head>
+    <body>
+        <header>
+            <h1>Web</h1>
+            Hello, Here is list of title
+        </header>
+        <nav>
+            <div id="nav"></div>
+        </nav>
+        <article>
+            <div style="color: blue">Content</div>
+            <div id="article_title"></div>
+            <div id="article_content"></div>
+            <ul>
+                <li><input type="button" value="create"></li>
+                <li><input type="button" value="delete"></li>
+            </ul>
+            <form action="#" onsubmit="
+                event.preventDefault();
+                console.log(`this.title.vlaue is: ${this.title.value}`);
+                console.log(`this.content.vlaue is: ${this.content.value}`);
+                var _title = this.title.value;
+                var _content = this.content.value;
+                store.dispatch({type: `CREATE`, title: _title, content: _content});
+            ">
+                <label for="title">Title</label><br>
+                <input type="text" id="title" name="title"><br>
+                <label for="content">Content</label><br>
+                <input type="text" id="content" name="content"><br><br>
+                <input type="submit" value="Submit">
+            </form>
+        </article>
+        <script>
+            const initialState = {
+                cont: [{id: 1, title:"HTML", content:"HTML is.."}]
+            }
+            var store = Redux.createStore(reducer);
+            function reducer(state, action){
+                if (state === undefined) {
+                    return initialState
+                }
+                if (action.type = 'CREATE') {
+                    let newState = Object.assign({}, state, {
+                        cont: [
+                            ...state.cont,
+                            {
+                                id: state.cont.length + 1,title: action.title, content: action.content
+                            }
+                        ]
+                    })
+                    /*
+                    newState = Object.assign({}, state, {title: action.title, content: action.content})
+                    */
+                    return newState
+                }
+            };
+            
+            function view_content(){
+                let storeGetState = store.getState();
+                console.log(storeGetState);
+                var view_title = storeGetState.cont[storeGetState.cont.length-1].title;
+                var view_content = storeGetState.cont[storeGetState.cont.length-1].content;
+                console.log(`view_title in view_title() is :${view_title}`);
+                console.log(`view_content in view_content() is :${view_content}`);
+                document.querySelector('#article_title').innerHTML = `
+                    <div>${view_title}<div>                
+                `;
+                document.querySelector('#article_content').innerHTML = `
+                    <div>${view_content}<div>
+                `;
+            }
+            store.subscribe(view_content);
+            view_content();
+            
+            function navInnerHtml(){
+                let storeGetState = store.getState();
+                let navlist = '';
+                /* 반복문 사용해서 store에 저장된 제목, 내용 돌려서 찍어주기*/
+                
+                for(let i= 0; i< storeGetState.cont.length; i++) {
+                    navlist = navlist + `
+                        <li><a href="javascript:void(0);" onclick="showContents()">${storeGetState.cont[i].title}</a></li>
+                    `;
+                }
+                
+                document.querySelector('#nav').innerHTML = `
+                        <ol>${navlist}</ol>
+                    `;
+                   
+                
+                /*
+                for(let i = 0; i < storeGetState.cont.length; i++) {
+                    
+                    document.querySelector('#nav').innerHTML = `
+                        <ol>
+                            <li><a href="javascript:void(0);">${storeGetState.cont[i].title}</a></li>
+                        </ol>
+                    `;
+                    
+                }
+                */
+            }
+            navInnerHtml();
+            store.subscribe(navInnerHtml);
+            
+            function showContents(){
+                console.log(" showcontents ");
+            };
+
+            /* NAV title 클릭하면 content까지 보여주는 함수 */
+
+        </script>
+    </body>
+</html>
