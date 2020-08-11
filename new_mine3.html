@@ -82,15 +82,17 @@
                 /* 반복문 사용해서 store에 저장된 제목, 내용 돌려서 찍어주기*/
                 
                 for(let i= 0; i< storeGetState.cont.length; i++) {
+                    let a = storeGetState.cont[i].title;
+                    let b = storeGetState.cont[i].content;
                     navlist = navlist + `
-                        <li><a href="javascript:void(0);" onclick="showContents()">${storeGetState.cont[i].title}</a></li>
+                        <li><a href="javascript:void(0);" onclick="showContents(${a}, ${b})">${storeGetState.cont[i].title}</a></li>
                     `;
                 }
                 
                 document.querySelector('#nav').innerHTML = `
                         <ol>${navlist}</ol>
                     `;
-                   
+                
                 
                 /*
                 for(let i = 0; i < storeGetState.cont.length; i++) {
@@ -107,7 +109,9 @@
             navInnerHtml();
             store.subscribe(navInnerHtml);
             
-            function showContents(){
+            function showContents(_, a, b){
+                console.log(a);
+                console.log(b);
                 console.log(" showcontents ");
             };
 

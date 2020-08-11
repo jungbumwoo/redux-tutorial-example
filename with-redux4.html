@@ -18,15 +18,21 @@
                 if (state === undefined) {
                     return { color: 'yellow'}
                 }
+                if ( action.type === 'COLOR_CHANGE') {
+                    return { color: action.color}
+                }
             }
 
             var store = Redux.createStore(reducer);
 
             function red() {
+                var getState = store.getState();
                 document.querySelector('#red').innerHTML = `
                     <div class="container">
                         <h3>red</h3>
-                        <input type="button" value="fire" />
+                        <input type="button" value="fire" onclick="
+                            store.dispatch({ type: 'COLOR_CHANGE', color: 'red'})
+                        "/>
                     </div>
                 `;
             }
