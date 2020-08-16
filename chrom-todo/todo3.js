@@ -44,11 +44,12 @@ function loadToDos() {
     const loadedToDos = localStorage.getItem(TODOS_LS);
     if (loadedToDos !== null) {
         console.log(loadedToDos);
-    }
-    const parsedToDos = JSON.parse(loadedToDos);
-    parsedToDos.forEach(function(toDo){
+        const parsedToDos = JSON.parse(loadedToDos);
+        parsedToDos.forEach(function(toDo){
         paintToDo(toDo.text);
     })
+    }
+    
 }
 
 function init(){
@@ -57,5 +58,4 @@ function init(){
     // 삭제 이벤트 리스너
     // 버튼.addEventListener("click", dealRemove);
 };
-
 init();
