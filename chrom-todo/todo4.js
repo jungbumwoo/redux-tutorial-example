@@ -15,10 +15,10 @@ function saveDone(){
 };
 
 function handleInput(text){
-    const li = document.createElement("li");
-    const delBtn = document.createElement("button");
-    const createBtn = document.createElement("button");
-    const span = document.createElement("span");
+    let li = document.createElement("li");
+    let delBtn = document.createElement("button");
+    let createBtn = document.createElement("button");
+    let span = document.createElement("span");
     let newId = TODO_LIST.length + 1;
 
     span.innerText = text;
@@ -62,6 +62,37 @@ function handleInput(text){
     */
 }
 
+function printDone(text) {
+    let li = document.createElement("li");
+    let delBtn = document.createElement("button");
+    let returnBtn = document.createElement("button");
+    let span = document.createElement("span");
+    let newId = DONE_LIST.length + 1;
+
+    span.innerText = text;
+    returnBtnBtn.innerText = "🔃";
+    returnBtn.onclick = checkToDo;
+    returnBtn.id = "check";
+    delBtn.innerText = "❌";
+    delBtn.addEventListener("click", delBtnClicked);
+
+    li.appendChild(span);
+    li.appendChild(returnBtn);
+    li.appendChild(delBtn);
+    li.id = newId;
+    ulDoneList.appendChild(li);
+    
+    // id값 주기 
+    let donePart = {
+        id: DONE_LIST.length +1,
+        text: text
+    }
+    DONE_LIST.push(donePart);
+
+    // save
+    saveDone();    
+}
+
 function checkToDo(event) {
     let checkBtn = event.target;  /* 리턴버튼 */
     checkBtn.innerText = "🔃";
@@ -70,14 +101,6 @@ function checkToDo(event) {
     console.log(checkLi);
     ulDoneList.appendChild(checkLi);
 
-    /* 요소 빼서 저장해주기 */
-    let gobackText = checkLi.firstChild.innerText;
-    let donePart = {
-        id: DONE_LIST.length +1,
-        text: gobackText
-    }
-    DONE_LIST.push(donePart);
-    saveDone();
 };
 
 function returnClicked(event){
