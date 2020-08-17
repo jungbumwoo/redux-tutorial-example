@@ -14,7 +14,7 @@ function saveDone(){
     localStorage.setItem("doneList", JSON.stringify(DONE_LIST));
 };
 
-function handleInput(text){
+function printToDo(text){
     let li = document.createElement("li");
     let delBtn = document.createElement("button");
     let createBtn = document.createElement("button");
@@ -60,7 +60,7 @@ function handleInput(text){
     TODO_LIST.push(toDoPart);
     localStorage.setItem("toDoList", JSON.stringify(TODO_LIST));
     */
-}
+};
 
 function printDone(done_text) {
     console.log("print done");
@@ -86,7 +86,7 @@ function printDone(done_text) {
     // id값 주기 
     let donePart = {
         id: DONE_LIST.length +1,
-        text: text
+        text: done_text
     }
     DONE_LIST.push(donePart);
 
@@ -102,23 +102,41 @@ function checkToDo(event) {
     let textExtract = checkLi.firstChild.innerText;
     console.log(textExtract);
     printDone(textExtract);
+    /* done 쪽으로 보내준 다음 toDo에서 지워야하는건데 이건 이렇게는 안되징 
+    delBtnClicked();
+    */
+    ulList.removeChild(checkLi);
+    
+    let goToDoneTodo = TODO_LIST.filter((baba) => {
+        return baba.id !== parseInt(checkLi.id);
+    });
+    TODO_LIST = goToDoneTodo;
+    saveToDo();
 };
 
 function returnClicked(event){
     let returnBtn = event.target;
     let returnedLi = returnBtn.parentNode;
     let gobackText = returnedLi.firstChild.innerText;
+    printToDo(gobackText);
 
-    console.log(gobackText);
+    ulDoneList.removeChild(returnedLi);
+    
+    let returnTodo = DONE_LIST.filter((baba) => {
+        return baba.id !== parseInt(returnedLi.id);
+    });
+    DONE_LIST = returnTodo;
+    saveDone();
 }
 
 function delBtnClicked(event) {
     let byeBtn = event.target;
     let byeLi = byeBtn.parentNode;
+    console.log(byeLi);
 
     ulList.removeChild(byeLi);
     
-    let cleanTodo = TODO_LIST.filter((baba) => {
+    let cleanTodo = DONE_LIST.filter((baba) => {
         return baba.id !== parseInt(byeLi.id);
     });
     TODO_LIST = cleanTodo;
@@ -126,7 +144,16 @@ function delBtnClicked(event) {
 };
 
 function returnDelBtnClicked(event) {
-    console.log("returnDelBtnClicked");
+    let byeBtn = event.target;
+    let byeLi = byeBtn.parentNode;
+
+    ulDoneList.removeChild(byeLi);
+    
+    let cleanTodo = TODO_LIST.filter((baba) => {
+        return baba.id !== parseInt(byeLi.id);
+    });
+    DONE_LIST = cleanTodo;
+    saveDone();
 };
 
 function loadToDo(){
@@ -135,7 +162,7 @@ function loadToDo(){
         let parsedLoadedToDo = JSON.parse(loadedToDo);
         parsedLoadedToDo.forEach((element) => {
             let savedText = element.text;
-            handleInput(savedText);
+            printToDo(savedText);
         })
     }
 }
@@ -154,7 +181,7 @@ function doneToDo(){
 function handleSubmit(){
     event.preventDefault();
     let inputValue = inputToDo.value;
-    handleInput(inputValue);
+    printToDo(inputValue);
     inputToDo.value = "";
 }
 
